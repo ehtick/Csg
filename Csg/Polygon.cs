@@ -14,8 +14,6 @@ namespace Csg
 		public readonly Plane Plane;
 		public readonly PolygonShared Shared;
 
-		readonly bool debug = false;
-
 		static readonly PolygonShared defaultShared = new PolygonShared(null);
 
 		BoundingSphere? cachedBoundingSphere;
@@ -26,10 +24,6 @@ namespace Csg
 			Vertices = vertices;
 			Shared = shared ?? defaultShared;
 			Plane = plane ?? Plane.FromVector3Ds(vertices[0].Pos, vertices[1].Pos, vertices[2].Pos);
-			if (debug)
-			{
-				//CheckIfConvex();
-			}
 		}
 
 		public Polygon(params Vertex[] vertices)
@@ -53,6 +47,9 @@ namespace Csg
 			}
 		}
 
+		/// <summary>
+		/// Axis-aligned bounding box for this polygon.
+		/// </summary>
 		public BoundingBox BoundingBox
 		{
 			get
@@ -115,33 +112,6 @@ namespace Csg
 			{
 				return "null";
 			}
-		}
-	}
-
-	public class Properties
-	{
-		public readonly Dictionary<string, object> All = new Dictionary<string, object>();
-		public Properties Merge(Properties otherproperties)
-		{
-			var result = new Properties();
-			foreach (var x in All)
-			{
-				result.All.Add(x.Key, x.Value);
-			}
-			foreach (var x in otherproperties.All)
-			{
-				result.All[x.Key] = x.Value;
-			}
-			return result;
-		}
-		public Properties Transform(Matrix4x4 matrix4x4)
-		{
-			var result = new Properties();
-			foreach (var x in All)
-			{
-				result.All.Add(x.Key, x.Value);
-			}
-			return result;
 		}
 	}
 }
